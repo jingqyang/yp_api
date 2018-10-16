@@ -2,31 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="dbcc022e-0fbe-4cd2-99b8-e957b5500407" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dictionaries/yangjingquan.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/application/user/controller/SerOrder.php" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/application/sto_test/controller/Address.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/application/sto_test/controller/Category.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/application/sto_test/controller/Index.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/application/sto_test/controller/Members.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/application/sto_test/controller/Order.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/application/sto_test/controller/Pay.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/application/sto_test/controller/Pay1.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/application/sto_test/controller/Pay6.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/application/sto_test/controller/Product.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/application/sto_test/controller/Shoppingcart.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/application/sto_test/controller/WxNotify.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/application/sto_test/controller/WxNotify6.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/application/sto_test/model/Address.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/application/sto_test/model/Category.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/application/sto_test/model/Members.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/application/sto_test/model/Order.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/application/sto_test/model/Products.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/application/sto_test/model/Recommend.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/application/sto_test/model/ShoppingCart.php" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/database.php" afterPath="$PROJECT_DIR$/application/database.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/user/controller/Apppay.php" afterPath="$PROJECT_DIR$/application/user/controller/Apppay.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/thinkphp/.gitignore" afterPath="$PROJECT_DIR$/thinkphp/.gitignore" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/thinkphp/.gitignore" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="yp_api.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -87,10 +65,10 @@
         </entry>
       </file>
       <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/thinkphp/.gitignore">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.10404624">
-              <caret line="4" column="1" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
+              <caret line="4" column="10" selection-start-line="4" selection-start-column="10" selection-end-line="4" selection-end-column="10" />
               <folding />
             </state>
           </provider>
@@ -110,6 +88,7 @@
         <option value="$PROJECT_DIR$/application/user/controller/SerOrder1.php" />
         <option value="$PROJECT_DIR$/application/user/controller/Serorder.php" />
         <option value="$PROJECT_DIR$/thinkphp/.gitignore" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -181,6 +160,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/application/user/controller" />
     </key>
   </component>
@@ -383,10 +363,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/thinkphp/.gitignore">
+    <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.10404624">
-          <caret line="4" column="1" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
+          <caret line="4" column="10" selection-start-line="4" selection-start-column="10" selection-end-line="4" selection-end-column="10" />
           <folding />
         </state>
       </provider>
