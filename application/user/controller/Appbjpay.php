@@ -13,9 +13,9 @@ use think\Db;
 use think\Loader;
 use think\Model;
 
-Loader::import('wxpay.WxPayApi', EXTEND_PATH);
+Loader::import('wxbjpay.WxPayApi', EXTEND_PATH);
 
-class Apppay extends Controller
+class Appbjpay extends Controller
 {
     //传输给微信的参数组装成xml格式发送
     public function ToXml($data = array())
@@ -56,87 +56,21 @@ class Apppay extends Controller
             };
         }
         $stringA = implode("&", $newArr);         //使用 & 符号连接参数
-        $stringSignTemp = $stringA . "&key=" . $WxPayConfig::KEY;        //拼接key
+//        $stringSignTemp = $stringA . "&key=" . $WxPayConfig::KEY;        //拼接key
+        $stringSignTemp = $stringA . "&key=yi8d938uuuuud23432432xxxcg444444";        //拼接key
         // key是在商户平台API安全里自己设置的
         $stringSignTemp = MD5($stringSignTemp);       //将字符串进行MD5加密
         $sign = strtoupper($stringSignTemp);      //将所有字符转换为大写
         return $sign;
-    }
-    //生成微信支付订单接口
-    //接口地址   https://yp.dxshuju.com/user/apppay/wx
-    //接口条件    telephone  token
-
-    public function wx(){
-        $telephone = input('post.telephone');
-        $token = input('post.token');
-        $where = "mem.telephone = '$telephone' && mem.token = '$token' ";
-        $pay = Db::table('yp_current_pay')->alias('pay')->field('pay.assessment,mem.bis_id,mem.telephone')
-            ->join('yp_member mem', 'mem.telephone=pay.telephone', 'LEFT')
-            ->where($where)
-            ->select();
-        $pay2 = Db::table('yp_history_pay')->alias('his')->field('his.assessment')
-            ->join('yp_member mem', 'mem.telephone=his.telephone', 'LEFT')
-            ->where($where)
-            ->select();
-        $sum1 = $sum2 = $sum = 0;
-
-        if ($pay) {
-            foreach ($pay as $k => $v) {
-                $sum1 += $v['assessment'];
-                $pay[$k]['bis_id'] = $v['bis_id'];
-                $pay[$k]['telephone'] = $v['telephone'];
-            }
-            foreach ($pay2 as $k => $v) {
-                $sum2 += $v['assessment'];
-            }
-            $sum = $sum1 + $sum2;
-
-            $id[] = Db::table('yp_member')->field('id')->where(['telephone' => $telephone, 'token' => $token])->select();
-            $i = [];
-            foreach ($id as $k => $v) {
-                $i = $v[$k]['id'];
-            }
-
-            $data = [
-                'bis_id' => $pay[0]['bis_id'],
-                'telephone' => $pay[0]['telephone'],
-                'order_no' => substr(date('YmdHis', time()), 2, 14) . $i . rand(111, 999),
-                'total_amount' => $sum,
-                'pay_status' => 0,
-                'create_time' => date('Y-m_d H:i:s', time()),
-            ];
-
-            $where = [
-                'telephone' => $pay[0]['telephone']
-            ];
-            Db::table('yp_main_order')->insert($data);
-            Db::table('yp_history_pay')->where($where)->update(['order_no' => $data['order_no']]);
-            Db::table('yp_current_pay')->where($where)->update(['order_no' => $data['order_no']]);
-            return json([
-                'status' => 1,
-                'message' => '订单添加成功',
-                'result' => $data
-            ]);
-        } else {
-            return json([
-                'status' => 0,
-                'message' => '订单添加失败'
-            ]);
-        }
-
-
     }
 
 
     public function wxpay()
     {
         $order_no = input('post.order_no');
-        $tab = Db::table('yp_main_order')->where(['order_no' => $order_no, 'pay_status' => 0])->select();
+        $tab = Db::table('yp_ser_orders')->where(['order_no' => $order_no, 'order_status' => 1])->find();
 
         if ($tab) {
-            foreach ($tab as $k => $v) {
-                $tab[$k]['total_amount'] = $v['total_amount'];
-            }
             $WxPayConfig = new \WxPayConfig();
             //调用随机字符串生成方法获取随机字符串
             $nonce_str = $this->rand_code();
@@ -145,12 +79,12 @@ class Apppay extends Controller
             //商户号
             $data['mch_id'] = $WxPayConfig::MCHID;
             //商品描述
-            $body = $tab[$k]['total_amount'];
-            $data['body'] = $body;
+            $data['body'] = '保洁项目';
             //ip地址
-            $data['spbill_create_ip'] = '116.255.206.241';
+//            $data['spbill_create_ip'] = '116.255.206.241';
             //金额
-            $total_fee = $tab[$k]['total_amount'];
+//            $total_fee = $tab['amount'];
+            $total_fee = 0.01;
             $data['total_fee'] = $total_fee * 100;
             //商户订单号,不能重复
             $data['out_trade_no'] = $order_no;
@@ -201,7 +135,7 @@ class Apppay extends Controller
                 //返回成功,将xml数据转换为数组.
                 $re = $this->FromXml($data);
                 //修改表中的预支付id
-                Db::table('yp_main_order')->where(['order_no' => $order_no, 'pay_status' => 0])->update(['prepay_id' => $re['prepay_id']]);
+                Db::table('yp_ser_orders')->where(['order_no' => $order_no, 'order_status' => 1])->update(['prepay_id' => $re['prepay_id']]);
 
                 if ($re['return_code'] != 'SUCCESS') {
                     return json([
@@ -279,39 +213,13 @@ class Apppay extends Controller
             if ($data['result_code'] == 'SUCCESS') {
                 //根据返回的订单号做业务逻辑
                 $arr = array(
-                    'pay_status' => 1,
+                    'order_status' => 2,
                     'transaction_id' => $data['transaction_id'],
                     'update_time' => date('Y-m-d H:i:s', time())
                 );
 
+                $re = Db::table('yp_ser_orders')->where(['order_no' => $data['out_trade_no']])->update($arr);
 
-                $re = Db::table('yp_main_order')->where(['order_no' => $data['out_trade_no']])->update($arr);
-                $ta = Db::table('yp_main_order')->where(['order_no' => $data['out_trade_no'], 'pay_status' => 1])->select();
-                $tas = Db::table('yp_main_order')->field('pay_status')->where(['order_no' => $data['out_trade_no'], 'pay_status' => 1])->select();
-                if ($tas) {
-                    Db::table('yp_current_pay')->where(['order_no' => $data['out_trade_no']])->update(['sf_pay' => 1, 'pay_data' => '已缴']);
-                    Db::table('yp_history_pay')->where(['order_no' => $data['out_trade_no']])->update(['sf_pay' => 1, 'pay_data' => '已缴']);
-                    Db::table('yp_current_pay')->where(['order_no' => $data['out_trade_no'], 'sf_pay' => 1])->update(['assessment' => 0]);
-                    Db::table('yp_history_pay')->where(['order_no' => $data['out_trade_no'], 'sf_pay' => 1])->update(['assessment' => 0]);
-                }
-                $sum = 0;
-                $tel = '';
-                $a = Db::table('yp_member')->alias('mem')
-                    ->field('mem.jifen,mem.telephone')
-                    ->join('yp_main_order order', 'order.telephone = mem.telephone', 'LEFT')
-                    ->where('order.telephone = mem.telephone')
-                    ->select();
-                foreach ($a as $v) {
-                    $sum = $v['jifen'];
-                    $tel = $v['telephone'];
-                }
-                $re = Db::table('yp_main_order')->where(['order_no' => $data['out_trade_no']])->update($arr);
-                Db::table('yp_main_order')->where(['order_no' => $data['out_trade_no']])->update($arr);
-                $rs = Db::table('yp_member')->alias('mem')
-                    ->field('mem.jifen')
-                    ->join('yp_main_order main', 'mem.telephone = main.telephone', 'LEFT')
-                    ->where(['main.pay_status' => 1, 'main.telephone' => $tel])
-                    ->update(['mem.jifen' => $sum + $data["total_fee"] / 100]);
                 //处理完成之后，告诉微信成功结果！
                 if ($re) {
                     echo '<xml>
